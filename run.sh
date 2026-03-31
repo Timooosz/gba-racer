@@ -1,0 +1,1 @@
+make && mgba racing.gba
