@@ -1,12 +1,4 @@
-#include "types.h"
-
-typedef int fixed; // 24.8 Format Fixed Point Number
-
-#define FIX_SHIFT 8
-#define FIX_SCALE (1 << FIX_SHIFT)
-
-INLINE fixed TO_FIXED(int x)     {return (x << FIX_SHIFT);}
-INLINE int   FROM_FIXED(fixed x) {return (x >> FIX_SHIFT);}
+#include "gmath.h"
 
 fixed mul(fixed a, fixed b) {
     return (a * b) >> FIX_SHIFT;
@@ -50,6 +42,3 @@ const short sin_lut[256] = {
     -97, -92, -86, -80, -74, -68, -62, -56, 
     -49, -43, -37, -31, -25, -18, -12, -6, 
 };
-
-INLINE fixed sin(int x) {return sin_lut[x & 0xFF];}
-INLINE fixed cos(int x) {return sin_lut[(x + 64) & 0xFF];}

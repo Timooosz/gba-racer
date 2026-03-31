@@ -1,5 +1,8 @@
 #include "gba.h"
 
+#define HALF_GAME_SCREEN_WIDTH  GAME_SCREEN_WIDTH / 2
+#define HALF_GAME_SCREEN_HEIGHT GAME_SCREEN_HEIGHT / 2
+
 int last_frame = 0, fps = 0;
 
 void clear_screen(u16 color) {
@@ -20,19 +23,27 @@ int main() {
     REG_BG2PA = 256 / 2; // 256: Original Scale
     REG_BG2PD = 256 / 2;
 
+    int count = 0;
+    fixed x, y;
+
     while(1) {
         u16 timer_shifted = REG_TM2D >> 11; // >> 11 := 30 FPS
         if (timer_shifted != last_frame) {
 
-            clear_screen(RGB15(5,5,5));
+            clear_screen(RGB15(2,2,2));
 
-            // fps
+            x = TO_FIXED(HALF_GAME_SCREEN_WIDTH);
+            x += mul(TO_FIXED(20), f_sin(count));
+            x = FROM_FIXED(x);
 
-            // DEBUG
-            VRAM[30] = 0;
-            VRAM[fps] = RGB15(0,31,0);
+            y = TO_FIXED(HALF_GAME_SCREEN_HEIGHT);
+            y += mul(TO_FIXED(20), f_cos(count++));
+            y = FROM_FIXED(y);
 
-            // COUNT
+            VRAM[y * GBA_SCREEN_WIDTH + x] = RGB15(31,0,0);
+
+            // count frames
+
             fps += 1;
             if (last_frame > timer_shifted) fps = 0;
             last_frame = timer_shifted;
