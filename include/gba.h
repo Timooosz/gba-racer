@@ -4,6 +4,7 @@
 #include "types.h"
 #include "input.h"
 #include "video.h"
+#include "gmath.h"
 
 #define DISPCNT  *(u32*)0x04000000 // Display Settings Register
 
